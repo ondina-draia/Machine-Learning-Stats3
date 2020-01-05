@@ -10,3 +10,4 @@ pip install sklearn, pandas, matplotlib, numpy
 ```
 
 ### Data description: 
+The data used is available for download at this link [data](https://archive.ics.uci.edu/ml/datasets/gene+expression+cancer+RNA-Seq)
