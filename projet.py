@@ -10,46 +10,48 @@ import seaborn as sns
 import matplotlib.pyplot as plt 
 import numpy as np
 from sklearn import linear_model
+from sklearn.feature_selection import SelectKBest, chi2, f_classif
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
+#stock features inside X and classes in Y
 df = pd.read_csv('data.csv', low_memory=False) #ficher source des données
+X = df.iloc[:,2:]
 dl = pd.read_csv('labels.csv')
-#labels = dl['Class'].tolist()
-df['Class'] = dl['Class']
-df.set_index('Class','Unnamed: 0')
-#del df['Unnamed: 0']
-#print(df.head())
-#stocker les features dans X et les classes dans Y
-Y = df.iloc[:,-1]
-X = df.loc[:, df.columns != 'Class']
-del X['Unnamed: 0']
+Y = dl.iloc[:,1]
+
+# Feature selection
+fts = SelectKBest(f_classif, k=12).fit(X, Y)
+# Obtention of a numpy.ndarray: contains bool like positions of the selected columns 
+support = fts.get_support()  
+# Feature filter 
+new_X = fts.transform(X)
 
 #Split training and testing data
+X_train, X_test, Y_train, Y_test = train_test_split(new_X,Y, test_size = 0.33, random_state=42)
 
-from sklearn.model_selection import train_test_split
-X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.33, random_state=42)
-
-from sklearn.preprocessing import StandardScaler
+#Standardize features by removing the mean and scaling to unit variance
+#Standardization of a dataset is a common requirement for many machine learning estimators: they might behave badly if the individual features do not more or less look like standard normally distributed data (e.g. Gaussian with 0 mean and unit variance).
 sc = StandardScaler()
 sc.fit(X_train)
-X_train_std = sc.transform(X_train)
-X_test_std = sc.transform(X_test)
+X_train = sc.transform(X_train)
+X_test = sc.transform(X_test)
 
 #Create a simple model
-logreg = linear_model.LogisticRegression(max_iter=1500, random_state = 0)
+logreg = linear_model.LogisticRegression()
 
 #Train the model
-logreg.fit(X_train_std,Y_train)
-Z = logreg.predict(X)
+logreg.fit(X_train,Y_train)
+Z = logreg.predict(X_test)
 
-print(pd.crosstab(Y,Z))
+# Teste l'accuracy du modèle
+training_accuracy = accuracy_score(logreg.predict(X_train),Y_train)
+testing_accuracy = accuracy_score(logreg.predict(X_test),Y_test)
 
-# Decision region drawing
-from matplotlib.colors import ListedColormap
-
-#print(Y) Name: Class, Length: 801, dtype: object
-#print(X) [801 rows x 20531 columns]
-
-print(df)
+# Affiche cette accuracy
+print("training accuracy:", training_accuracy, "Testing accuracy:", testing_accuracy)
+print("crosstab:\n", pd.crosstab(Y_test, Z))
 
 #En construction
 #sns.set_style("whitegrid")
