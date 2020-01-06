@@ -65,6 +65,6 @@ tree.export_graphviz(estimator, out_file='output/tree.dot',
                 precision = 2, filled = True)
 dotfile.close()
 
-call(['dot', '-Tpng', 'C:/Users/utilisateur/Documents/Cours/M2 DLAD Bioinfo/Machine-Learning-Stats3-master/output/tree.dot', '-o', 'output/tree.png', '-Gdpi=1000'])
+call(['dot', '-Tpng', "C:/Users/utilisateur/Documents/Cours/M2 DLAD Bioinfo/Machine-Learning-Stats3-master/output/tree.dot", '-o', 'output/tree.png', '-Gdpi=1000']) #recuperer fichier generée sous le nom de tree, copier le contenu et le coller sur http://webgraphviz.com/ afin de el visualiser
 
 print(accuracy_score(model.predict(X_test), Y_test))
