@@ -83,11 +83,11 @@ for i in range(1, len(X.iloc[1,:])):
         break
 
 #recuperer données dans des listes
-BRCA = []
-PRAD = []
-LUAD = []
-COAD = []
-KIRC = []
+BRCA_test = []
+PRAD_test = []
+LUAD_test = []
+COAD_test = []
+KIRC_test = []
 
 k=0
 LABELS = ['BRCA','PRAD','LUAD','COAD','KIRC']
@@ -97,15 +97,43 @@ for j in Y_test:
     for i in np.nditer(X_test):
         if l==k:
             if j == 'BRCA':
-                BRCA.append(float(i))
+                BRCA_test.append(float(i))
             elif j == 'PRAD':
-                PRAD.append(float(i))
+                PRAD_test.append(float(i))
             elif j == 'LUAD':
-                LUAD.append(float(i))
+                LUAD_test.append(float(i))
             elif j == 'COAD':
-                COAD.append(float(i))
+                COAD_test.append(float(i))
             else:
-                KIRC.append(float(i))
+                KIRC_test.append(float(i))
+        if l > k:
+            break 
+        l+=1
+    k+=1
+
+BRCA_train = []
+PRAD_train = []
+LUAD_train = []
+COAD_train = []
+KIRC_train = []
+
+k=0
+LABELS = ['BRCA','PRAD','LUAD','COAD','KIRC']
+
+for j in Y_train:
+    l=0
+    for i in np.nditer(X_train):
+        if l==k:
+            if j == 'BRCA':
+                BRCA_train.append(float(i))
+            elif j == 'PRAD':
+                PRAD_train.append(float(i))
+            elif j == 'LUAD':
+                LUAD_train.append(float(i))
+            elif j == 'COAD':
+                COAD_train.append(float(i))
+            else:
+                KIRC_train.append(float(i))
         if l > k:
             break 
         l+=1
@@ -116,19 +144,40 @@ for i in range(len(LABELS)):
     ax = plt.subplot(1, len(LABELS), i+1)
     #plt.gray()
     if LABELS[i] == 'BRCA':
-        plt.plot(BRCA)
+        plt.scatter(range(0, len(BRCA_test)),BRCA_test)
     elif LABELS[i] == 'PRAD':
-        plt.plot(PRAD)
+        plt.scatter(range(0, len(PRAD_test)),PRAD_test)   
     elif LABELS[i] == 'LUAD':
-        plt.plot(LUAD)
+        plt.scatter(range(0, len(LUAD_test)),LUAD_test)
     elif LABELS[i] == 'COAD':
-        plt.plot(COAD)
+        plt.scatter(range(0, len(COAD_test)),COAD_test)  
     elif LABELS[i] == 'KIRC':
-        plt.plot(KIRC)
+        plt.scatter(range(0, len(KIRC_test)),KIRC_test)
+        
         
     ax.get_xaxis().set_visible(True)
     ax.get_yaxis().set_visible(True)
     plt.title(LABELS[i])
+
+plt.figure(figsize=(20, 2))
+for i in range(len(LABELS)):
+    ax = plt.subplot(1, len(LABELS), i+1)
+    #plt.gray()
+    if LABELS[i] == 'BRCA':
+        plt.scatter(range(0, len(BRCA_train)),BRCA_train)
+    elif LABELS[i] == 'PRAD':
+        plt.scatter(range(0, len(PRAD_train)),PRAD_train)
+    elif LABELS[i] == 'LUAD':
+        plt.scatter(range(0, len(LUAD_train)),LUAD_train)
+    elif LABELS[i] == 'COAD':
+        plt.scatter(range(0, len(COAD_train)),COAD_train)
+    elif LABELS[i] == 'KIRC':
+        plt.scatter(range(0, len(KIRC_train)),KIRC_train)
+        
+    ax.get_xaxis().set_visible(True)
+    ax.get_yaxis().set_visible(True)
+    plt.title(LABELS[i])
+
 
 plt.show()
 
