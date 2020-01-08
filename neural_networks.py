@@ -88,8 +88,9 @@ PRAD = []
 LUAD = []
 COAD = []
 KIRC = []
-print(BRCA)
+
 k=0
+LABELS = ['BRCA','PRAD','LUAD','COAD','KIRC']
 
 for j in Y_test:
     l=0
@@ -110,15 +111,24 @@ for j in Y_test:
         l+=1
     k+=1
 
-n = 5
 plt.figure(figsize=(20, 2))
-for i in range(n):
-	ax = plt.subplot(1, n, i+1)
-	#~ plt.imshow(X_test_noisy[i].reshape(6,6))
-	plt.gray()
-	ax.get_xaxis().set_visible(True)
-	ax.get_yaxis().set_visible(True)
-    
-    
+for i in range(len(LABELS)):
+    ax = plt.subplot(1, len(LABELS), i+1)
+    #plt.gray()
+    if LABELS[i] == 'BRCA':
+        plt.plot(BRCA)
+    elif LABELS[i] == 'PRAD':
+        plt.plot(PRAD)
+    elif LABELS[i] == 'LUAD':
+        plt.plot(LUAD)
+    elif LABELS[i] == 'COAD':
+        plt.plot(COAD)
+    elif LABELS[i] == 'KIRC':
+        plt.plot(KIRC)
+        
+    ax.get_xaxis().set_visible(True)
+    ax.get_yaxis().set_visible(True)
+    plt.title(LABELS[i])
+
 plt.show()
 
