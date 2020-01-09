@@ -20,6 +20,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import linear_model
 from sklearn.metrics import accuracy_score
 
+
 def kerasFunct(X_train, X_test, Y_train, Y_test):
 	"""
 	
