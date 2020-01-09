@@ -8,9 +8,7 @@ Created on Sun Jan  5 14:54:47 2020
 #Tree based methods
 #dataset: collection données RNA-seq, extraction random d'expressions
 #de gènes de patients ayant des tumeurs differentes: BRCA; KIRC, COAD, LUAD, PRAD
-
 # les samples/ instances stockés row-wise. 
-
 #dummy-name, gene_XX donné à chaque attribut
 
 import pandas as pd 
@@ -48,7 +46,7 @@ sc.fit(X_train)
 X_train = sc.transform(X_train)
 X_test = sc.transform(X_test)
 
-model = RandomForestClassifier(n_estimators=10)
+model = RandomForestClassifier(n_estimators=100)
 model.fit(X_train, Y_train)
 
 label_names = np.array(['BRCA', 'COAD', 'KIRC', 'LUAD', 'PRAD'])
@@ -65,6 +63,6 @@ tree.export_graphviz(estimator, out_file='output/tree.dot',
                 precision = 2, filled = True)
 dotfile.close()
 
-call(['dot', '-Tpng', "C:/Users/utilisateur/Documents/Cours/M2 DLAD Bioinfo/Machine-Learning-Stats3-master/output/tree.dot", '-o', 'output/tree.png', '-Gdpi=1000']) #recuperer fichier generée sous le nom de tree, copier le contenu et le coller sur http://webgraphviz.com/ afin de el visualiser
+#call(['dot', '-Tpng', "C:/Users/utilisateur/Documents/Cours/M2 DLAD Bioinfo/Machine-Learning-Stats3-master/output/tree.dot", '-o', 'output/tree.png', '-Gdpi=1000']) #recuperer fichier generée sous le nom de tree, copier le contenu et le coller sur http://webgraphviz.com/ afin de el visualiser
 
 print(accuracy_score(model.predict(X_test), Y_test))
