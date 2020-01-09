@@ -24,6 +24,8 @@ X = df.iloc[:,2:]
 dl = pd.read_csv('labels.csv')
 Y = dl.iloc[:,1]
 
+print(Y)
+
 # Feature selection
 fts = SelectKBest(f_classif, k=12).fit(X, Y)
 # Obtention of a numpy.ndarray: contains bool like positions of the selected columns 
@@ -35,9 +37,8 @@ new_X = fts.transform(X)
 #Split training and testing data
 X_train, X_test, Y_train, Y_test = train_test_split(new_X,Y, test_size = 0.33, random_state=42)
 
-
-#~ X_train = np.reshape(X_train, (len(X_train), 28, 28, 1))
-#~ X_test = np.reshape(X_test, (len(X_test), 28, 28, 1))
+X_train = np.reshape(X_train, (len(X_train), 28, 28, 1))
+X_test = np.reshape(X_test, (len(X_test), 28, 28, 1))
 
 
 noise_factor = 0.5
@@ -51,8 +52,7 @@ n = 5
 plt.figure(figsize=(20, 2))
 for i in range(n):
 	ax = plt.subplot(1, n, i+1)
-	#~ plt.imshow(X_test_noisy[i].reshape(6,6))
 	plt.gray()
-	ax.get_xaxis().set_visible(False)
-	ax.get_yaxis().set_visible(False)
+	ax.set_xlabel('Features')
+	ax.set_ylabel('Training and Testing accuracy')
 plt.show()
