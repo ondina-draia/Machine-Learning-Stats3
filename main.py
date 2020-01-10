@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+"""
+Created on Sun Jan  5 14:54:47 2020
+
+@author: Draia-Nicolau Ondina & Baheux Melina
+"""
+
 #dataset: collection données RNA-seq, extraction random d'expressions
 #de gènes de patients ayant des tumeurs differentes: BRCA; KIRC, COAD, LUAD, PRAD
 
@@ -21,8 +27,8 @@ from function import compTrainTest, plotLinearRegression, SVM, treeFunc, linearM
 
 def projectMain(data, label):
 	"""
-	data : Dataset contenant les données sur les tumeurs
-	label : Dataset contenant les noms de chaque tumeur associées aux genes
+	data : Dataset containing tumors gene information
+	label : Dataset containing the labels of the tumors
 	
 	"""
 	#stock features inside X and classes in Y
@@ -49,20 +55,10 @@ def projectMain(data, label):
 	X_test = sc.transform(X_test)
 	
 	print(linearModel(X_train, X_test, Y_train, Y_test))
-	print(compTrainTest(X, Y))
 	print(plotLinearRegression(X, Y))
 	print(SVM(X, Y))
 	print(treeFunc(X_train, X_test, Y_train, Y_test, new_X))
-	
-
-
-
-#En construction
-#sns.set_style("whitegrid")
-#sns.FacetGrid(df, hue="Class", height=4) \
-#    .map(plt.scatter, "Unnamed: 0", "Class") \
-#    .add_legend()
-#plt.show()
+	print(compTrainTest(X, Y))
 
 
 if __name__ == '__main__':

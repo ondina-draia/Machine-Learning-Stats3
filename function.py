@@ -22,55 +22,82 @@ from os import system
 from sklearn import svm
 import sys
 
-def boucleTraining(X,Y):
+def boucleTraining(X,Y, mod):
 	"""
-	
+	X : List of the genes
+	Y : List of labels
+	mod : regression or svm model
+	return : testing_accuracy, training_accuracy, X_test, X_train, Y_test and Y_train values
 	"""
 	training_accuracy, testing_accuracy = [], []
 		# Search for the best number of feature to get the best accuracy
 	for i in range(1, len(X.iloc[1,:])):
-	    # Feature selection
-	    # Select Kbest: Select features according to the k highest scores.
-	    fts = SelectKBest(f_classif, k=i).fit(X, Y)
-	    # Obtention of a numpy.ndarray: contains bool like positions of the selected columns 
-	    support = fts.get_support()  
-	    # Feature filter 
-	    new_X = fts.transform(X)
-	
-	    #Split training and testing data
-	    X_train, X_test, Y_train, Y_test = train_test_split(new_X,Y, test_size = 0.33,                      random_state=42)
-	
-	    #Standardize features by removing the mean and scaling to unit variance
-	    #Standardization of a dataset is a common requirement for many machine learning         estimators: they might behave badly if the individual features do not more or less look like    standard normally distributed data (e.g. Gaussian with 0 mean and unit variance).
-	    sc = StandardScaler()
-	    sc.fit(X_train)
-	    X_train = sc.transform(X_train)
-	    X_test = sc.transform(X_test)
-	
-	    #Create a simple model
-	    logreg = linear_model.LogisticRegression(C=1e30, solver='liblinear')
-	
-	    #Train the model
-	    logreg.fit(X_train,Y_train)
-	    Z = logreg.predict(X_test)
-	
-	    # Teste l'accuracy du modèle
-	    training_accuracy.append(accuracy_score(logreg.predict(X_train),Y_train))
-	    testing_accuracy.append(accuracy_score(logreg.predict(X_test),Y_test))
-	
-	    # Affiche cette accuracy
-	    ("training accuracy:", training_accuracy[i-1], "Testing accuracy:",         testing_accuracy[i-1])
-	    #~ print("crosstab:\n", pd.crosstab(Y_test, Z))
-	    
-	    if i == 15:
-	        break
+		# Feature selection
+		# Select Kbest: Select features according to the k highest scores.
+		fts = SelectKBest(f_classif, k=i).fit(X, Y)
+		# Obtention of a numpy.ndarray: contains bool like positions of the selected columns 
+		support = fts.get_support()  
+		# Feature filter 
+		new_X = fts.transform(X)
+		
+		if mod == "reg":
+			#Split training and testing data
+			X_train, X_test, Y_train, Y_test = train_test_split(new_X,Y, test_size = 0.33, random_state=42)
+			
+			#Standardize features by removing the mean and scaling to unit variance
+			#Standardization of a dataset is a common requirement for many machine learning         estimators: they might behave badly if the individual features do not more or less look like    standard normally distributed data (e.g. Gaussian with 0 mean and unit variance).
+			sc = StandardScaler()
+			sc.fit(X_train)
+			X_train = sc.transform(X_train)
+			X_test = sc.transform(X_test)
+			#Create a simple model
+			logreg = linear_model.LogisticRegression(C = 1e30, solver='liblinear')
+			
+			#Train the model
+			logreg.fit(X_train,Y_train)
+			Z = logreg.predict(X_test)
+			
+			# Teste l'accuracy du modèle
+			training_accuracy.append(accuracy_score(logreg.predict(X_train),Y_train))
+			testing_accuracy.append(accuracy_score(logreg.predict(X_test),Y_test))
+		else:
+			#Split training and testing data
+			X_train, X_test, Y_train, Y_test = train_test_split(new_X,Y, test_size = 0.33, random_state=12)
+			
+			#Standardize features by removing the mean and scaling to unit variance
+			#Standardization of a dataset is a common requirement for many machine learning         estimators: they might behave badly if the individual features do not more or less look like    standard normally distributed data (e.g. Gaussian with 0 mean and unit variance).
+			sc = StandardScaler()
+			sc.fit(X_train)
+			X_train = sc.transform(X_train)
+			X_test = sc.transform(X_test)
+			#Create a simple model
+			# KNeighborsClassifier created 
+			model = svm.SVC(C = 100, kernel='linear')
+			
+			#Train the model
+			model.fit(X_train, Y_train)
+			Z = model.predict(X_test)
+			
+			# Teste l'accuracy du modèle
+			training_accuracy.append(accuracy_score(model.predict(X_train),Y_train))
+			testing_accuracy.append(accuracy_score(model.predict(X_test),Y_test))
+			
+			
+			
+		# Affiche cette accuracy
+		("training accuracy:", training_accuracy[i-1], "Testing accuracy:",         testing_accuracy[i-1])
+		#~ print("crosstab:\n", pd.crosstab(Y_test, Z))
+		
+		if i == 15:
+			break
 	return testing_accuracy, training_accuracy, X_test, X_train, Y_test, Y_train
 
 def plotLinearRegression(X, Y):
 	"""
-	
+	X : List of the genes
+	Y : List of labels
 	"""
-	testing_accuracy, training_accuracy, X_test, X_train, Y_test, Y_train = boucleTraining(X, Y)#
+	testing_accuracy, training_accuracy, X_test, X_train, Y_test, Y_train = boucleTraining(X, Y, "reg")
 	#~ #Plotting the accuracy of the testing and training 
 	fig, ax = plt.subplots()
 	ax.set_xlabel('Features')
@@ -87,7 +114,11 @@ def plotLinearRegression(X, Y):
 
 def treeFunc(X_train, X_test, Y_train, Y_test, new_X):
 	"""
-	
+	X_train : Trained values
+	X_test : Test values
+	Y_train : Labels of trained values
+	Y_test : Labels of test values
+	new_X : Selection of kbest
 	"""
 	model = RandomForestClassifier(n_estimators=10)
 	model.fit(X_train, Y_train)
@@ -110,9 +141,10 @@ def treeFunc(X_train, X_test, Y_train, Y_test, new_X):
 
 def SVM(X, Y):
 	"""
-	
+	X : List of the genes
+	Y : List of labels
 	"""
-	testing_accuracy, training_accuracy, X_test, X_train, Y_test, Y_train = boucleTraining(X, Y)
+	testing_accuracy, training_accuracy, X_test, X_train, Y_test, Y_train = boucleTraining(X, Y, "svm")
 	#Plotting the accuracy of the testing and training 
 	fig, ax = plt.subplots()
 	ax.set_xlabel('Features')
@@ -128,9 +160,11 @@ def SVM(X, Y):
 	
 def compTrainTest(X, Y):
 	"""
-	
+	X : List of the genes
+	Y : List of labels
 	"""
-	testing_accuracy, training_accuracy, X_test, X_train, Y_test, Y_train = boucleTraining(X, Y)
+	testing_accuracy, training_accuracy, X_test, X_train, Y_test, Y_train = boucleTraining(X, Y, "reg")
+	
 	noise_factor = 0.5
 	X_train_noisy = X_train + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=X_train.shape)
 	X_test_noisy = X_test + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=X_test.shape)
@@ -240,10 +274,10 @@ def compTrainTest(X, Y):
 
 def linearModel(X_train, X_test, Y_train, Y_test):
 	"""
-	X_train :
-	X_test :
-	Y_train :
-	Y_test :
+	X_train : Trained values
+	X_test : Test values
+	Y_train : Labels of trained values
+	Y_test : Labels of test values
 	
 	"""
 	#Create a simple model
