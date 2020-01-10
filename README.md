@@ -7,6 +7,8 @@ Libraries that need to be installed prior to the script running: sklearn, pandas
 ##### Command: 
 ```
 pip install sklearn, pandas, matplotlib, numpy==1.16.4, keras==2.3.1, tensorflow==1.13.1
+
+python3 main.py data.csv label.csv
 ```
 
 ### Data description: 
