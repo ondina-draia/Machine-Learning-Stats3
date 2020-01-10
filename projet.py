@@ -18,6 +18,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from neural_networks import kerasFunct
+from linearregression import plotLinearRegression
 
 
 def projectMain(data, label):
@@ -51,6 +52,7 @@ def projectMain(data, label):
 	
 	print(linearModel(X_train, X_test, Y_train, Y_test))
 	print(kerasFunct(X_train, X_test, Y_train, Y_test))
+	print(plotLinearRegression(X, Y))
 	
 def linearModel(X_train, X_test, Y_train, Y_test):
 	"""
