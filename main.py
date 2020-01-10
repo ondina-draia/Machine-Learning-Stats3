@@ -2,7 +2,7 @@
 """
 Created on Fri Jan 10 17:15:59 2020
 
-@author: utilisateur
+@author: Draia-Nicolau Ondina & Baheux Melina 
 """
 
 #!/usr/bin/python3
@@ -60,6 +60,7 @@ def projectMain(data, label):
     X_train = sc.transform(X_train)
     X_test = sc.transform(X_test)
     
+    #calls the different functions created and prints the output
     print(linearModel(X_train, X_test, Y_train, Y_test))
     print(plotLinearRegression(X, Y))
     print(SVM(X, Y))
