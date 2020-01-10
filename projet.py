@@ -19,6 +19,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from neural_networks import kerasFunct
 from linearregression import plotLinearRegression
+from SVM import SVM
+from treebasedmethod import tree
 
 
 def projectMain(data, label):
@@ -53,6 +55,8 @@ def projectMain(data, label):
 	print(linearModel(X_train, X_test, Y_train, Y_test))
 	print(kerasFunct(X_train, X_test, Y_train, Y_test))
 	print(plotLinearRegression(X, Y))
+	print(SVM(X, Y))
+	print(tree(X_train, X_test, Y_train, Y_test))
 	
 def linearModel(X_train, X_test, Y_train, Y_test):
 	"""
