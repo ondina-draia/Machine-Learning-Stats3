@@ -9,7 +9,6 @@
 #dummy-name, gene_XX donné à chaque attribut
 import sys
 import pandas as pd
-import seaborn as sns 
 import matplotlib.pyplot as plt 
 import numpy as np
 from sklearn import linear_model
@@ -17,10 +16,7 @@ from sklearn.feature_selection import SelectKBest, chi2, f_classif
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from neural_networks import kerasFunct
-from linearregression import plotLinearRegression
-from SVM import SVM
-from treebasedmethod import tree
+from function import compTrainTest, plotLinearRegression, SVM, treeFunc, linearModel
 
 
 def projectMain(data, label):
@@ -53,33 +49,11 @@ def projectMain(data, label):
 	X_test = sc.transform(X_test)
 	
 	print(linearModel(X_train, X_test, Y_train, Y_test))
-	print(kerasFunct(X_train, X_test, Y_train, Y_test))
+	print(compTrainTest(X, Y))
 	print(plotLinearRegression(X, Y))
 	print(SVM(X, Y))
-	print(tree(X_train, X_test, Y_train, Y_test))
+	print(treeFunc(X_train, X_test, Y_train, Y_test, new_X))
 	
-def linearModel(X_train, X_test, Y_train, Y_test):
-	"""
-	X_train :
-	X_test :
-	Y_train :
-	Y_test :
-	
-	"""
-	#Create a simple model
-	logreg = linear_model.LogisticRegression()
-	
-	#Train the model
-	logreg.fit(X_train,Y_train)
-	Z = logreg.predict(X_test)
-	
-	# Teste l'accuracy du modèle
-	training_accuracy = accuracy_score(logreg.predict(X_train),Y_train)
-	testing_accuracy = accuracy_score(logreg.predict(X_test),Y_test)
-	
-	# Affiche cette accuracy
-	print("training accuracy:", training_accuracy, "Testing accuracy:", testing_accuracy)
-	print("crosstab:\n", pd.crosstab(Y_test, Z))
 
 
 
