@@ -1,7 +1,7 @@
 # Machine-Learning-Stats3
 ## Authors: Draia-Nicolau Ondina & Baheux Mélina
 
-### Python version used: 3.7.4 under Spyder
+### Python version used: 3.7.4 
 
 Libraries that need to be installed prior to the script running: sklearn, pandas, matplotlib, numpy
 ##### Command: 
