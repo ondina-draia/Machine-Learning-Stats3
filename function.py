@@ -298,7 +298,9 @@ def linearModel(X_train, X_test, Y_train, Y_test):
 
 def kerasNN(X, Y):
     """
-    
+    X: features
+    Y: labels 
+    This function creates a neural network model using keras and trains the model using the data from data.csv
     """
     #stock features inside X and classes in Y
     #df = pd.read_csv(data, low_memory=False) #ficher source des données
